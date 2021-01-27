@@ -10,5 +10,23 @@ package projet.sio;
  * @author delot
  */
 public class Demineur_Théo {
+  
+    /**
+    * retourne true s'il existe un "M" à cet indice
+    *
+    * @author Thierry
+    *
+    * @param tDemineur tableau de la grille du démineur
+    * @param indice indice dans tDemineur. Doit être compris entre 0 et 99
+    *
+    * @return
+    *    true il y a une mine à indice.
+    *    false pas de mine à indice.
+    *
+    */
+    public static boolean isMine(String[] tDemineur, int indice){
+       if (tDemineur[indice] == "M" ) return true;
+       return false;
+    }
     
 }
