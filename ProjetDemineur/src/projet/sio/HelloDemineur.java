@@ -11,7 +11,7 @@ import java.awt.*;
 
 /**
  *
- * @author thbogusz
+ * @author theo
  */
 public class HelloDemineur {
 
@@ -38,7 +38,7 @@ public class HelloDemineur {
                 System.out.println("Vous avez perdu ! ");
                 continuer = false;
             } else {
-                tDemineur[valeurPosition]=Demineur_Théo.compteurBombe(tDemineur,valeurPosition);
+                tDemineur[valeurPosition-1]=Demineur_Théo.compteurBombe(tDemineur,valeurPosition);
                 Demineur_Théo.affiche(tLettre, tDemineur);
             }
         }

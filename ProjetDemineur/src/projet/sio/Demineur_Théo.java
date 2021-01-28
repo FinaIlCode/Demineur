@@ -24,7 +24,6 @@ public class Demineur_Théo {
         int k = 0;
         int l = 10;
         int compteur=0;
-        char espace = ' ';
         for (int i = 0; i < 10; i++) {
             System.out.print(tLettre[i]);
             System.out.print(" ");
@@ -39,7 +38,7 @@ public class Demineur_Théo {
                             System.out.print(tDemineur[compteur] + " ");
                         } else{
                             if(tDemineur[compteur]=='0'){
-                                System.out.print(espace + espace);
+                                System.out.print("0 ");
                             } else {
                                 System.out.print("- ");
                             }
@@ -211,7 +210,6 @@ public class Demineur_Théo {
                 }
             }
         }
-        System.out.println(cBombe);
         char charBombe= intToChar(cBombe);
         return charBombe;
     }
