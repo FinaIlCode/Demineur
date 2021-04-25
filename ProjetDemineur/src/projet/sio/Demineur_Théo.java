@@ -56,19 +56,23 @@ public class Demineur_Théo {
 
 
     public static boolean isMine(char[] tDemineur, int indice) {
-        indice--;
         if (tDemineur[indice] == 'M') return true;
         return false;
     }
 
-    public static void initParti(char[] tDemineur){
-        int mine = 10;
+    public static void initDemineur(char[] t){
         int random;
+        int mine = 30;
         while(mine>0){
             random = (int)(Math.random()*99);
-            System.out.println(random);
-            tDemineur[random] = 'M';
+            t[random] = 'M';
             mine--;
+        }
+    }
+
+    public static void initPlayer(char[] t){
+        for(int i = 0 ; i < t.length ; i++){
+            t[i] = '/';
         }
     }
 
@@ -86,7 +90,7 @@ public class Demineur_Théo {
             position = traitementPosition(lettre);
             position+=10;
         }
-
+        position--;
         return position;
     }
 
@@ -151,72 +155,73 @@ public class Demineur_Théo {
             case '9':
                 valeur = 9;
                 break;
-
-
         }
         return valeur;
     }
 
-    public static char compteurBombe(char[] tDemineur,int valeurPosition){
-        int cBombe= 0 ;
-        valeurPosition--;
-        //Coins
-        if(valeurPosition == 0 || valeurPosition == 9 || valeurPosition == 90 || valeurPosition == 99 ){
-            if(valeurPosition==0){
-                if (tDemineur[valeurPosition+1]=='M') {
-                    cBombe++;
-                }
-                if (tDemineur[valeurPosition+10]=='M'){
-                    cBombe++;
-                }
-                if (tDemineur[valeurPosition+11]=='M'){
-                    cBombe++;
-                }
-            }
 
-            if(valeurPosition==9){
-                if (tDemineur[valeurPosition-1]=='M') {
-                    cBombe++;
-                }
-                if (tDemineur[valeurPosition+9]=='M'){
-                    cBombe++;
-                }
-                if (tDemineur[valeurPosition+10]=='M'){
-                    cBombe++;
-                }
-            }
 
-            if(valeurPosition==90){
-                if (tDemineur[valeurPosition+1]=='M') {
-                    cBombe++;
-                }
-                if (tDemineur[valeurPosition-10]=='M'){
-                    cBombe++;
-                }
-                if (tDemineur[valeurPosition-11]=='M'){
-                    cBombe++;
-                }
-            }
-
-            if(valeurPosition==99){
-                if (tDemineur[valeurPosition-1]=='M') {
-                    cBombe++;
-                }
-                if (tDemineur[valeurPosition-10]=='M'){
-                    cBombe++;
-                }
-                if (tDemineur[valeurPosition-11]=='M'){
-                    cBombe++;
+    public static String checkPlacement(char[] tDemineur, int valeurPosition) {
+        Boolean continuer = true;
+        String placement = "";
+        if (valeurPosition == 0 || valeurPosition == 9 || valeurPosition == 90 || valeurPosition == 99 && continuer) {
+            return "coin";
+        } else {
+            if (valeurPosition % 10 == 0 && continuer) {
+                return "coteGauche";
+            } else {
+                if (valeurPosition % 10 == 9 && continuer) {
+                    return "coteDroit";
+                } else {
+                    if(valeurPosition>=1 && valeurPosition<=8 && continuer){
+                        return "haut";
+                    } else{
+                        if(valeurPosition>=91 && valeurPosition <=98 && continuer){
+                            return "bas";
+                        } else {
+                            return "milieu";
+                        }
+                    }
                 }
             }
         }
-        char charBombe= intToChar(cBombe);
-        return charBombe;
     }
 
-    private static char intToChar(int i){
-        String s = ""+i;
-        return s.charAt(0);
+    public static void nombreBombe(char[] tDemineur, int valeurPosition, char[] tLettre, char[] tPlayer){
+        if (Demineur_Théo.checkPlacement(tDemineur, valeurPosition) == "coin") {
+            tPlayer[valeurPosition] = CompteurClass.compteurBombeCoin(tDemineur, valeurPosition);
+        } else {
+            if (Demineur_Théo.checkPlacement(tDemineur, valeurPosition) == "haut") {
+                tPlayer[valeurPosition] = CompteurClass.compteurBombeHaut(tDemineur,valeurPosition);
+            } else {
+                if(Demineur_Théo.checkPlacement(tDemineur, valeurPosition) == "bas"){
+                    tPlayer[valeurPosition] = CompteurClass.compteurBombeBas(tDemineur,valeurPosition);
+                } else {
+                    if(Demineur_Théo.checkPlacement(tDemineur, valeurPosition) == "coteGauche"){
+                        tPlayer[valeurPosition] = CompteurClass.compteurBombeGauche(tDemineur,valeurPosition);
+                    } else {
+                        if(Demineur_Théo.checkPlacement(tDemineur, valeurPosition) == "coteDroit"){
+                            tPlayer[valeurPosition] = CompteurClass.compteurBombeDroite(tDemineur,valeurPosition);
+                        } else {
+                            if(Demineur_Théo.checkPlacement(tDemineur, valeurPosition) == "milieu"){
+                                tPlayer[valeurPosition] = CompteurClass.compteurBombeMilieu(tDemineur,valeurPosition);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
+    public static boolean testWin(char[] tPlayer , char[] tDemineur){
+
+        for(int i =0 ; i<tDemineur.length ; i++){
+            if(tDemineur[i] != 'M'){
+                if(tPlayer[i]=='/'){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

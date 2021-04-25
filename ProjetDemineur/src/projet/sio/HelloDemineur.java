@@ -8,6 +8,7 @@ package projet.sio;
 import plum.console.Clavier;
 
 import java.awt.*;
+import java.util.Locale;
 
 /**
  *
@@ -22,28 +23,42 @@ public class HelloDemineur {
 
         char[] tLettre = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',};
         char[] tDemineur = new char[100];
+        char[] tPlayer = new char[100];
+        String difficulte;
 
-        Demineur_Théo.initParti(tDemineur);
-        Demineur_Théo.affiche(tLettre, tDemineur);
-        Boolean continuer = true;
-
+        Demineur_Théo.initPlayer(tPlayer);
+        Demineur_Théo.affiche(tLettre,tPlayer);
+        boolean continuer = true;
+        boolean saisie=false;
+        String position;
         while (continuer) {
 
-            String position = Clavier.lireTexte("Saisissez une position : ");
+            do {
+                position = Clavier.lireTexte("Saisissez une position : ");
+                position=position.toUpperCase();
+                saisie=TestSaisieUtilisateur.testSaisie(position);
+                if(!saisie){
+                    System.out.println("La position indiqué n'existe pas ! \nVeuillez réessayer !");
+                }
+            }while(!saisie);
+
             int valeurPosition = Demineur_Théo.position(position);
 
             if (Demineur_Théo.isMine(tDemineur, valeurPosition)) {
-                tDemineur[valeurPosition] = 'X';
-                Demineur_Théo.affiche(tLettre, tDemineur);
-                System.out.println("Vous avez perdu ! ");
+                tPlayer[valeurPosition] = 'X';
+                Demineur_Théo.affiche(tLettre, tPlayer);
                 continuer = false;
             } else {
-                tDemineur[valeurPosition-1]=Demineur_Théo.compteurBombe(tDemineur,valeurPosition);
-                Demineur_Théo.affiche(tLettre, tDemineur);
+                Demineur_Théo.nombreBombe(tDemineur,valeurPosition,tLettre,tPlayer);
+                Demineur_Théo.affiche(tLettre,tPlayer);
+                continuer=Demineur_Théo.testWin(tPlayer,tDemineur);
             }
+        }
+        if(!continuer){
+            System.out.println("Vous avez perdu !");
+        } else {
+            System.out.println("Vous avez gagné ! ");
         }
     }
 }
-
-    
 
